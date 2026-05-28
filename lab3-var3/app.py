@@ -22,43 +22,25 @@ def main():
 
     group = parser.add_mutually_exclusive_group(required=True)
 
-    group.add_argument(
-        '--generation',
-        action='store_true',
-        help='Режим генерации ключей'
-    )
+    group.add_argument('--generation', action='store_true', help='Режим генерации ключей')
 
-    group.add_argument(
-        '--encryption',
-        action='store_true',
-        help='Режим шифрования'
-    )
+    group.add_argument('--encryption', action='store_true', help='Режим шифрования')
 
-    group.add_argument(
-        '--decryption',
-        action='store_true',
-        help='Режим дешифрования'
-    )
+    group.add_argument('--decryption', action='store_true', help='Режим дешифрования')
 
-    parser.add_argument(
-        '--config',
-        required=True,
-        help='Путь к JSON-конфигу'
-    )
+    parser.add_argument('--config', required=True, help='Путь к JSON-конфигу')
 
     args = parser.parse_args()
 
     settings = load_settings(args.config)
 
-    if args.generation:
-        generate_keys(settings)
-
-    elif args.encryption:
-        encrypt_file(settings)
-
-    elif args.decryption:
-        decrypt_file(settings)
-
+    match args:
+        case _ if args.generation:
+            generate_keys(settings)
+        case _ if args.encryption:
+            encrypt_file(settings)
+        case _ if args.decryption:
+            decrypt_file(settings)
 
 if __name__ == '__main__':
     main()

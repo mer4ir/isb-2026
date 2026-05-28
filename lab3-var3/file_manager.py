@@ -1,3 +1,6 @@
+import os
+
+
 def write_binary_file(path, data):
     """
     Сохраняет бинарные данные в файл.
@@ -8,10 +11,30 @@ def write_binary_file(path, data):
 
         data (bytes):
             Бинарные данные.
+
+    Raises:
+        IOError: Если не удалось записать файл.
     """
 
-    with open(path, 'wb') as file:
-        file.write(data)
+    try:
+        # Создаём директорию, если её нет
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        
+        with open(path, 'wb') as file:
+            file.write(data)
+        print(f'[+] Файл успешно сохранён: {path}')
+    
+    except FileNotFoundError as e:
+        print(f'[-] Ошибка: директория не найдена - {e}')
+        raise
+    
+    except PermissionError as e:
+        print(f'[-] Ошибка: нет прав для записи в файл {path} - {e}')
+        raise
+    
+    except Exception as e:
+        print(f'[-] Непредвиденная ошибка при записи файла {path}: {e}')
+        raise
 
 
 def read_binary_file(path):
@@ -25,7 +48,26 @@ def read_binary_file(path):
     Returns:
         bytes:
             Содержимое файла.
+
+    Raises:
+        FileNotFoundError: Если файл не найден.
+        IOError: Если не удалось прочитать файл.
     """
 
-    with open(path, 'rb') as file:
-        return file.read()
+    try:
+        with open(path, 'rb') as file:
+            data = file.read()
+        print(f'[+] Файл успешно прочитан: {path}')
+        return data
+    
+    except FileNotFoundError as e:
+        print(f'[-] Ошибка: файл не найден {path} - {e}')
+        raise
+    
+    except PermissionError as e:
+        print(f'[-] Ошибка: нет прав для чтения файла {path} - {e}')
+        raise
+    
+    except Exception as e:
+        print(f'[-] Непредвиденная ошибка при чтении файла {path}: {e}')
+        raise

@@ -3,6 +3,7 @@ import os
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization
 
+from key_loader import save_rsa_keys
 from file_manager import write_binary_file
 
 
@@ -44,22 +45,7 @@ def generate_keys(settings):
 
     print('[+] Сохранение RSA ключей...')
 
-    with open(settings['public_key'], 'wb') as file:
-        file.write(
-            public_key.public_bytes(
-                encoding=serialization.Encoding.PEM,
-                format=serialization.PublicFormat.SubjectPublicKeyInfo
-            )
-        )
-
-    with open(settings['private_key'], 'wb') as file:
-        file.write(
-            private_key.private_bytes(
-                encoding=serialization.Encoding.PEM,
-                format=serialization.PrivateFormat.TraditionalOpenSSL,
-                encryption_algorithm=serialization.NoEncryption()
-            )
-        )
+    save_rsa_keys(settings, private_key, public_key)
 
     print('[+] Шифрование симметричного ключа RSA...')
 

@@ -2,6 +2,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes, serialization
 
+from key_loader import load_private_key
 from file_manager import read_binary_file, write_binary_file
 
 
@@ -17,11 +18,7 @@ def decrypt_file(settings):
 
     print('[+] Загрузка RSA ключа...')
 
-    with open(settings['private_key'], 'rb') as file:
-        private_key = serialization.load_pem_private_key(
-            file.read(),
-            password=None
-        )
+    private_key = load_private_key(settings)
 
     encrypted_key = read_binary_file(
         settings['symmetric_encrypted']
