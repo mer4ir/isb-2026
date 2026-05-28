@@ -2,16 +2,14 @@ def write_binary_file(path, data):
     """
     Сохраняет бинарные данные в файл.
 
-    Файл открывается в режиме бинарной записи.
-    Если файл не существует, он будет создан.
-
     Args:
         path (str):
-            Путь к сохраняемому файлу.
+            Путь к файлу.
 
         data (bytes):
-            Данные для записи.
+            Бинарные данные.
     """
+
     with open(path, 'wb') as file:
         file.write(data)
 
@@ -22,11 +20,12 @@ def read_binary_file(path):
 
     Args:
         path (str):
-            Путь к считываемому файлу.
+            Путь к файлу.
 
     Returns:
         bytes:
-            Содержимое файла в виде массива байтов.
+            Содержимое файла.
     """
+
     with open(path, 'rb') as file:
         return file.read()
